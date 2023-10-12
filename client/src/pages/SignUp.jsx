@@ -42,7 +42,7 @@ const SignUp = () => {
     }
   };
 
-  console.log("Form Data : " + formData);
+  console.log("Form Data : " + JSON.stringify(formData));
 
   return (
     <div className="p-3 max-w-lg mx-auto">
