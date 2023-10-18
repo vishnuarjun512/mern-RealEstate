@@ -10,7 +10,7 @@ import { app } from "../firebase";
 
 const Profile = () => {
   const fileRef = useRef(null);
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
@@ -24,6 +24,10 @@ const Profile = () => {
       handleFileUpload(file);
     }
   }, [file]);
+
+  useEffect(() => {
+    console.log("Updated FormData ->", formData);
+  }, [formData]);
 
   const handleFileUpload = (file) => {
     const storage = getStorage(app);

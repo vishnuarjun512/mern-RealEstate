@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 mongoose
@@ -18,12 +19,11 @@ const app = express();
 
 app.use(express.json());
 
-app.listen(3000, () => {
-  console.log("Server is running!!!");
-});
+app.use(cookieParser());
 
-app.use("/api/user", userRouter);
-app.use("/api/auth", authRouter);
+app.listen(3000, () => {
+  console.log("Server is running on Port:3000!!!");
+});
 
 //MiddleWare
 app.use((err, req, res, next) => {
@@ -35,3 +35,6 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
