@@ -29,12 +29,8 @@ export const updateUser = async (req, res, next) => {
 
     const { password, ...rest } = updatedUser._doc;
 
-    res.status(200).json({
-      success: true,
-      message: "User Updated Successfully",
-      user: rest,
-    });
+    res.status(200).json(rest);
   } catch (error) {
-    next("Error in User Controller -> ", error);
+    next(error);
   }
 };

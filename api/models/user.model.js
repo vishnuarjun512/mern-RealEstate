@@ -18,8 +18,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default:
-        "https://cdn.pixabay.com/photo/2018/08/28/13/29/avatar-3637561_640.png",
+      default: "https://cdn-icons-png.flaticon.com/512/1077/1077114.png",
     },
   },
   { timestamps: true }
