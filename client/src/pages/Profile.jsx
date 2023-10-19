@@ -22,6 +22,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -57,6 +58,12 @@ export default function Profile() {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
           setFormData({ ...formData, avatar: downloadURL })
         );
+        setConfirmationMessage("Image successfully uploaded!");
+
+        // Clear the confirmation message after 2 seconds
+        setTimeout(() => {
+          setConfirmationMessage("");
+        }, 2000);
       }
     );
   };
@@ -112,8 +119,8 @@ export default function Profile() {
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
             <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
-            <span className="text-green-700">Image successfully uploaded!</span>
+          ) : confirmationMessage ? (
+            <span className="text-green-700">{confirmationMessage}</span>
           ) : (
             ""
           )}
