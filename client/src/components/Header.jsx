@@ -26,7 +26,7 @@ const Header = () => {
   }, [location.search]);
 
   return (
-    <header className="bg-slate-200 shadow-md">
+    <header className="bg-slate-200 shadow-md fixed w-full z-10">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl md:text-2xl lg:text-4xl flex flex-wrap">

@@ -254,7 +254,7 @@ export default function Search() {
           Listing Results:
         </h1>
         <div className="">
-          <div className="p-7 grid grid-cols-2 min-[1020px]:grid-cols-3 min-[1500px]:grid-cols-4  gap-3">
+          <div className="p-7 grid grid-cols-2 min-[1020px]:grid-cols-3 min-[1700px]:grid-cols-4 gap-y-5">
             {!loading && listings.length == 0 && (
               <p className="text-center text-xl text-slate-700 w-full p-2">
                 No Listings
