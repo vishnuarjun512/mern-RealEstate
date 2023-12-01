@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ListingCard from "../components/ListingCard";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Search() {
   });
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   console.log(sidebarData);
   console.log("Listings -> ", listings);
 
@@ -49,9 +51,15 @@ export default function Search() {
 
     const fetchListings = async () => {
       setLoading(true);
+      setShowMore(false);
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/listing/get?${searchQuery}`);
       const data = await res.json();
+      if (data.length > 8) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
+      }
       console.log(data);
       setListings(data);
       setLoading(false);
@@ -105,6 +113,27 @@ export default function Search() {
     urlParams.set("order", sidebarData.order);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  const onShowMoreClick = async () => {
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+
+    const res = await fetch(`/api/listing/get?${searchQuery}`);
+    const newData = await res.json();
+
+    if (newData.length < 9) {
+      setShowMore(false);
+    }
+
+    setListings((prevListings) => {
+      // Filter out duplicates before updating the state
+      const updatedListings = [...new Set([...prevListings, ...newData])];
+      return updatedListings;
+    });
   };
 
   return (
@@ -220,14 +249,38 @@ export default function Search() {
         </form>
       </div>
       {/* Right Side */}
-      <div className="p-5">
+      <div className="flex-1">
         <h1 className="text-3xl font-semibold border-b p-3 text-slate-700">
           Listing Results:
         </h1>
-        {listings &&
-          listings.map((listing) => {
-            <div>{listing["name"]}</div>;
-          })}
+        <div className="">
+          <div className="p-7 grid grid-cols-2 min-[1020px]:grid-cols-3 min-[1500px]:grid-cols-4  gap-3">
+            {!loading && listings.length == 0 && (
+              <p className="text-center text-xl text-slate-700 w-full p-2">
+                No Listings
+              </p>
+            )}
+            {loading && (
+              <p className="text-center text-xl text-slate-700 w-full p-2">
+                Loading ...
+              </p>
+            )}
+            {!loading &&
+              listings &&
+              listings.map((listing) => (
+                <ListingCard key={listing._id} listing={listing} />
+              ))}
+
+            {showMore && (
+              <button
+                onClick={onShowMoreClick}
+                className="text-green-700 hover:underline p-7 text-center w-full"
+              >
+                Show more
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
